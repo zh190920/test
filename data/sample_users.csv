@@ -1,0 +1,4 @@
+user_id,age,gender,experience_level,job_level,core_function,tech_domain,skill_level,activity,behavior_tags
+1,25,男,2年,工程师,设备运维,电气,入门,周活,浏览PLC板块,搜索SV660故障
+2,30,女,5年,高级工程师,研发设计,工控,进阶,月活,评论伺服调试,点击EtherCAT教程
+3,35,男,8年,技术主管,自动化集成,工业机器人,资深,日活,搜索汇川SCARA编程,购买课程

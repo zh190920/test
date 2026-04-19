@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>用户画像与课程推荐</title>
+</head>
+<body>
+    <h1>输入用户描述</h1>
+    <form id="userForm">
+        <label>用户描述: <textarea id="description" rows="4" cols="60" placeholder="请输入用户的自然语言描述，如：男，初级工程师，近三个月多次浏览了sv600伺服通信模块的故障诊断模块等"></textarea></label><br>
+        <button type="submit">生成画像与推荐</button>
+    </form>
+    <div id="result"></div>
+    <div id="recommend"></div>
+
+    <script>
+        document.getElementById('userForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                description: document.getElementById('description').value
+            };
+            // 获取用户画像
+            const response = await fetch('/profile', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+            const profile = await response.json();
+
+            // 展示6级标签
+            let html = '<h2>用户画像（6级标签）:</h2><table border="1"><tr><th>标签类别</th><th>标签内容</th></tr>';
+            const level1 = ['身份标签','岗位职能','核心产品','核心技术','技能层级','学习成长'];
+            for (const tag of level1) {
+                html += `<tr><td>${tag}</td><td>${profile[tag] ? profile[tag].join('，') : 'None'}</td></tr>`;
+            }
+            html += '</table>';
+            document.getElementById('result').innerHTML = html;
+
+            // 获取推荐课程
+            const recRes = await fetch('/recommend', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+            const recs = await recRes.json();
+            let recHtml = '<h2>推荐课程:</h2>';
+            if (recs && recs.length > 0) {
+                recHtml += '<ul>';
+                for (const c of recs) {
+                    recHtml += `<li>${c.title}</li>`;
+                }
+                recHtml += '</ul>';
+            } else {
+                recHtml += '无推荐课程';
+            }
+            document.getElementById('recommend').innerHTML = recHtml;
+        });
+    </script>
+</body>
+</html>

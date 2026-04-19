@@ -1,0 +1,5 @@
+course_id,title,category,tags,target_audience
+1,SV660故障排查教程,伺服调试,SV660,故障诊断,入门工程师
+2,EtherCAT通信模块培训,通信技术,EtherCAT,参数调试,进阶工程师
+3,汇川SCARA机器人编程,机器人编程,SCARA,编程,资深工程师
+4,PLC基础入门,PLC编程,H系列,基础,零基础用户
