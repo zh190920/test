@@ -19,41 +19,53 @@
             const data = {
                 description: document.getElementById('description').value
             };
-            // 获取用户画像
-            const response = await fetch('/profile', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
-            });
-            const profile = await response.json();
-
-            // 展示6级标签
-            let html = '<h2>用户画像（6级标签）:</h2><table border="1"><tr><th>标签类别</th><th>标签内容</th></tr>';
-            const level1 = ['身份标签','岗位职能','核心产品','核心技术','技能层级','学习成长'];
-            for (const tag of level1) {
-                html += `<tr><td>${tag}</td><td>${profile[tag] ? profile[tag].join('，') : 'None'}</td></tr>`;
-            }
-            html += '</table>';
-            document.getElementById('result').innerHTML = html;
-
-            // 获取推荐课程
-            const recRes = await fetch('/recommend', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
-            });
-            const recs = await recRes.json();
-            let recHtml = '<h2>推荐课程:</h2>';
-            if (recs && recs.length > 0) {
-                recHtml += '<ul>';
-                for (const c of recs) {
-                    recHtml += `<li>${c.title}</li>`;
+            try {
+                // 获取用户画像
+                const response = await fetch('/profile', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+                if (!response.ok) {
+                    throw new Error(`获取用户画像失败，状态码: ${response.status}`);
                 }
-                recHtml += '</ul>';
-            } else {
-                recHtml += '无推荐课程';
+                const profile = await response.json();
+
+                // 展示6级标签
+                let html = '<h2>用户画像（6级标签）:</h2><table border="1"><tr><th>标签类别</th><th>标签内容</th></tr>';
+                const level1 = ['身份标签','岗位职能','核心产品','核心技术','技能层级','学习成长'];
+                for (const tag of level1) {
+                    html += `<tr><td>${tag}</td><td>${profile[tag] ? profile[tag].join('，') : 'None'}</td></tr>`;
+                }
+                html += '</table>';
+                document.getElementById('result').innerHTML = html;
+
+                // 获取推荐课程
+                const recRes = await fetch('/recommend', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+                if (!recRes.ok) {
+                    throw new Error(`获取推荐课程失败，状态码: ${recRes.status}`);
+                }
+                const recs = await recRes.json();
+                let recHtml = '<h2>推荐课程:</h2>';
+                if (recs && recs.length > 0) {
+                    recHtml += '<ul>';
+                    for (const c of recs) {
+                        recHtml += `<li>${c.title}</li>`;
+                    }
+                    recHtml += '</ul>';
+                } else {
+                    recHtml += '无推荐课程';
+                }
+                document.getElementById('recommend').innerHTML = recHtml;
+            } catch (error) {
+                console.error('请求出错:', error);
+                document.getElementById('result').innerHTML = `<p style="color:red;">${error.message}</p>`;
+                document.getElementById('recommend').innerHTML = '';
             }
-            document.getElementById('recommend').innerHTML = recHtml;
         });
     </script>
 </body>

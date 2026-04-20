@@ -21,26 +21,18 @@ recommender = CourseRecommender(courses_df, user_profiler)
 def index():
     return render_template('index.html')
 
-
 @app.route('/profile', methods=['POST'])
 def get_profile():
     user_data = request.json
-    # 兼容description字段
-    if 'description' in user_data:
-        user_data = {'description': user_data['description']}
     profile = user_profiler.build_profile(user_data)
     return jsonify(profile)
-
 
 @app.route('/recommend', methods=['POST'])
 def get_recommendations():
     user_data = request.json
-    # 兼容description字段
-    if 'description' in user_data:
-        user_data = {'description': user_data['description']}
     profile = user_profiler.build_profile(user_data)
     recommendations = recommender.recommend(profile)
     return jsonify(recommendations)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True,port=8000)

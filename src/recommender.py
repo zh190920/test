@@ -23,6 +23,10 @@ class CourseRecommender:
         score = 0
         course_tags = course['tags'].split(',')
         for category, tags in profile.items():
+            if not tags:
+                continue
+            if not isinstance(tags, list):
+                continue
             for tag in tags:
                 if tag in course_tags:
                     score += 1  # 简单匹配得分
