@@ -33,7 +33,7 @@
 
                 // 展示6级标签
                 let html = '<h2>用户画像（6级标签）:</h2><table border="1"><tr><th>标签类别</th><th>标签内容</th></tr>';
-                const level1 = ['身份标签','岗位职能','核心产品','核心技术','技能层级','学习成长'];
+                const level1 = ['身份岗位标签','岗位职能标签','核心产品标签','核心技术标签','技能层级标签','学习成长标签'];
                 for (const tag of level1) {
                     html += `<tr><td>${tag}</td><td>${profile[tag] ? profile[tag].join('，') : 'None'}</td></tr>`;
                 }

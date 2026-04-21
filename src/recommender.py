@@ -11,17 +11,17 @@ class CourseRecommender:
         recommendations = []
         for _, course in self.courses.iterrows():
             score = self._calculate_score(user_profile, course)
-            recommendations.append({
-                'course_id': course['course_id'],
-                'title': course['title'],
-                'score': score
-            })
+            if score > 0:
+                recommendations.append({
+                    'title': course['课程'],
+                    'score': score
+                })
         recommendations.sort(key=lambda x: x['score'], reverse=True)
         return recommendations[:top_k]
 
     def _calculate_score(self, profile: Dict[str, List[str]], course) -> float:
         score = 0
-        course_tags = course['tags'].split(',')
+        course_tags = course['标签'].split(',')
         for category, tags in profile.items():
             if not tags:
                 continue

@@ -14,7 +14,7 @@ base_url="https://api.siliconflow.cn/v1"
 
 tag_tree = TagTree(openai_key)
 user_profiler = UserProfile(tag_tree)
-courses_df = pd.read_csv('data/courses.csv')
+courses_df = pd.read_csv('data/tag_course_mapping.csv')
 recommender = CourseRecommender(courses_df, user_profiler)
 
 @app.route('/')
